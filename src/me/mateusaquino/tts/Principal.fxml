@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="342.0" prefWidth="565.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.mateusaquino.ttv.PrincipalController">
+<AnchorPane prefHeight="342.0" prefWidth="565.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.mateusaquino.tts.PrincipalController">
    <children>
       <TextArea fx:id="tab" focusTraversable="false" layoutX="20.0" layoutY="34.0" prefHeight="215.0" prefWidth="346.0" text="" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="121.0" AnchorPane.topAnchor="34.0">
          <font>
