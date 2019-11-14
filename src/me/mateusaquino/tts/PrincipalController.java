@@ -22,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -34,6 +35,7 @@ public class PrincipalController {
     @FXML private SplitMenuButton file;
     @FXML private TextArea tab;
     @FXML private Label fail;
+    @FXML private TextField bpm;
     @FXML private ComboBox<String> instrument;
     private ManagedPlayer player;
     private Pattern seq;
@@ -61,6 +63,25 @@ public class PrincipalController {
     	stop.setOnMouseClicked(e->actionStop());
     	save.setOnMouseClicked(e->actionSave());
     	file.setOnMouseClicked(e->actionChoose());
+    	
+    	speed.valueProperty().addListener((e, o, n)->bpm.setText(n.intValue()+""));
+    	bpm.textProperty().addListener((e, o, n)->{
+    		if(n.isEmpty())
+    			bpm.setText("0");
+    		else if (!n.matches("^\\d+$"))
+    			bpm.setText(o);
+    		int val = Integer.parseInt(bpm.getText());
+    		if (val>50&&val<250)
+    			speed.setValue(val);
+    		bpm.setText(val+"");
+    	});
+    	
+    	bpm.focusedProperty().addListener((e, o, n) -> {if (!n) {
+    		int val = Integer.parseInt(bpm.getText());
+    		val = val>250 ? 250 : val<50 ? 50 : val; // Valores apenas entre 50-250 para bpm
+    		speed.setValue(val);
+    		bpm.setText(val+"");
+    	}});
     	
     	tab.setText("E|----3-3-5-5--3-3-1-1-0-0-------------------|\n"+
     				"B|-1-1--------------------3-3-1--------------|\n"+
@@ -166,7 +187,7 @@ public class PrincipalController {
     	melody = MelodyFix.fix(melody, instrument.getValue());
     	System.out.println("RES: " + melody);
     	
-    	seq = new Pattern(""+melody).setTempo((int) (speed.getValue()*5));
+    	seq = new Pattern(""+melody).setTempo((int) (speed.getValue()));
     }
     
     private Sequence getSequence(){

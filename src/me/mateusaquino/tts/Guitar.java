@@ -1,6 +1,8 @@
 package me.mateusaquino.tts;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Guitar {
 	private java.lang.String melody = "";
@@ -9,16 +11,16 @@ public class Guitar {
 		java.lang.String[] strings = tab.trim().split("\n");
 		for (int tabOffset = 0; tabOffset < strings.length-5; tabOffset+=6){
 			String[] guitarStrings = {new String("e"),new String("B"),new String("G"),new String("D"),new String("A"),new String("E")};
-			while (strings[tabOffset].trim().isEmpty())
+			while (!strings[tabOffset].trim().matches("^\\w\\|[^|]+?\\|"))
 				tabOffset++;
 			HashMap<java.lang.String, char[]> map = new HashMap<java.lang.String, char[]>();
-			int length = strings[tabOffset+0].trim().toCharArray().length;
-			map.put("e", strings[tabOffset+0].trim().toCharArray());
-			map.put("B", strings[tabOffset+1].trim().toCharArray());
-			map.put("G", strings[tabOffset+2].trim().toCharArray());
-			map.put("D", strings[tabOffset+3].trim().toCharArray());
-			map.put("A", strings[tabOffset+4].trim().toCharArray());
-			map.put("E", strings[tabOffset+5].trim().toCharArray());
+			int length = getLine(strings[tabOffset+0]).length;
+			map.put("e", getLine(strings[tabOffset+0]));
+			map.put("B", getLine(strings[tabOffset+1]));
+			map.put("G", getLine(strings[tabOffset+2]));
+			map.put("D", getLine(strings[tabOffset+3]));
+			map.put("A", getLine(strings[tabOffset+4]));
+			map.put("E", getLine(strings[tabOffset+5]));
 					
 			int oldpos = -1;
 			java.lang.String oldnote = "";
@@ -43,7 +45,15 @@ public class Guitar {
 				}
 				guitarStrings = sort(guitarStrings); // ordena as cordas p/ poder ler em ordem
 			}
+			melody += oldnote + " R ";
 		}
+	}
+	
+	Pattern lineRgx = Pattern.compile("^\\w\\|[^|]+?\\|");
+	public char[] getLine(java.lang.String str){
+		Matcher m = lineRgx.matcher(str.trim()); 
+		m.find();
+		return m.group(0).toCharArray();
 	}
 	
 	public java.lang.String toMelody(){

@@ -18,7 +18,7 @@ public class MelodyFix {
 	
 	// Corrige as notas para seu valor MIDI
 	public static String fixNote(String note, String tune, int octaves){
-		note = note.replaceAll("h|b|r|~|\\/|\\\\", " ").trim(); // remove notações de violão/guitarra
+		note = note.replaceAll("h|b|r|p|~|\\/|\\\\", " ").trim(); // remove notações de violão/guitarra
 		String notes[] = note.split(" +");
 		String fixed = "";
 		for (String deathnote : notes){ // Corrige valor para notas tocadas juntas (eg.: 60+64, 24+29+32, ...)
